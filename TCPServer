@@ -1,0 +1,27 @@
+import java.io.*;
+import java.net.*;
+public class Server{
+       public static void main(String args[]) throws IOException,FileNotFoundException{
+                   		ServerSocket servsock = new ServerSocket(8000);
+				System.out.println("Server is ready to accept the connection");
+				Socket sock= servsock.accept();
+				System.out.println("Connection established Successfully");
+				
+			        InputStream istream=sock.getInputStream();
+				BufferedReader buffread = new BufferedReader(new InputStreamReader(istream));
+				String fname=buffread.readLine();
+			 	System.out.println("filename received from client"+fname);
+
+				BufferedReader contReader = new BufferedReader(new FileReader(fname));
+				OutputStream ostream = sock.getOutputStream();
+				PrintWriter pwriter = new PrintWriter(ostream,true);
+				String str;
+				while((str=contReader.readLine())!=null)
+				{
+				 pwriter.println(str);
+				}sock.close();
+				servsock.close();
+				pwriter.close();
+
+                               }
+}
